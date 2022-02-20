@@ -17,8 +17,8 @@
     <div class="row">
       <div class="col-12">
         <img src="images/Logo@2x.png" alt="Alura" width="120" class="mb-2">
-        <div class="row d-flex justify-content-center align-content-center start-screen">
-          <div class="col-10 col-sm-6 col-md-5 col-lg-4">
+        <div class="row d-flex justify-content-center align-content-center screen">
+          <div id="start-screen" class="col-10 col-sm-6 col-md-5 col-lg-4 d-none">
             <button id="btn-start-game" class="button-blue d-block w-100">Iniciar Juego</button>
             <button id="btn-new-word" class="button-gray d-block mt-3 w-100">Agregar nueva palabra</button>
           </div>
@@ -38,12 +38,23 @@
               </div>
               <div class="col-12 col-sm-10 col-md-8 d-sm-flex align-items-center justify-content-around w-100">
                 <button id="btn-save-word" class="button-blue col-12 col-sm-5">Guardar y empezar</button>
-                <button id="btn-cancel" class="button-gray col-12 col-sm-5 mt-2 mt-sm-0" onclick="event.preventDefault();alert('hola')">Cancelar</button>
+                <button id="btn-cancel" class="button-gray col-12 col-sm-5 mt-2 mt-sm-0">Cancelar</button>
               </div>
             </form>
           </div>
+          <div id="game-screen" class="col-12 col-sm-10 col-md-8">
+            <canvas id="board" class="d-none" width="1200px" height="600px"></canvas>
+            <p id="guessed-letters" class="text-center fs-1 d-flex align-content-end justify-content-center">
+            </p>
+            <div id="wrong-letters" class="text-center fs-3 mb-4 mt-3">
+              <span>F</span><span>H</span><span>T</span><span>Y</span>
+            </div>
+            <div class="col-12 col-sm-10 col-md-8 d-sm-flex align-items-center justify-content-around w-100">
+              <button id="btn-new-game" class="button-blue col-12 col-sm-5">Nuevo Juego</button>
+              <button id="btn-surrender" class="button-gray col-12 col-sm-5 mt-2 mt-sm-0">Desistir</button>
+            </div>
+          </div>
         </div>
-        <canvas id="board" class="d-none" width="1200px" height="600px"></canvas>
       </div>
     </div>
   </main>

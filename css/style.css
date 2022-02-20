@@ -16,6 +16,12 @@ button {
   color: #0a3871;
 }
 
-.start-screen{
+.screen {
   height: 60vh;
+}
+
+.letter-space {
+  display: inline-block;
+  max-width: 45px;
+  border-bottom: 5px solid black;
 }
