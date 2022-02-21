@@ -45,7 +45,7 @@ function addSpace(parent, width) {
   space.textContent = " ";
   if (width <= 15) {
     space.style.width = width + "px";
-  }else{
+  } else {
     space.style.width = "15px";
   }
   parent.appendChild(space);
