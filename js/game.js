@@ -1,4 +1,4 @@
-let lifes = 6;
+let lives = 6;
 let lettersUser = [];
 let indexes = [];
 
@@ -21,18 +21,24 @@ function startGame() {
   document.body.addEventListener("keypress", keyPressFunction);
 }
 
-function keyPressFunction() {
-  // ValidateLetter();
-  let letter = event.key.toUpperCase();
-  if (alreadyTyped(letter)) {
-    return;
+function keyPressFunction(event) {
+  if (validateLetter(event.key)) {
+    let letter = event.key.toUpperCase();
+    if (alreadyTyped(letter)) {
+      return;
+    }
+    lettersUser.push(letter);
+    if (isLetterInWord(letter)) {
+      letterGuessed(letter);
+    } else {
+      wrongLetter(letter);
+    }
   }
-  lettersUser.push(letter);
-  if (isLetterInWord(letter)) {
-    letterGuessed(letter);
-  } else {
-    wrongLetter(letter);
-  }
+}
+
+function validateLetter(letter){
+  let pattern = /[A-z]/;
+  return pattern.test(letter);
 }
 
 function alreadyTyped(letter) {
@@ -65,7 +71,7 @@ function addGuessedLetter(letter) {
 
 function wrongLetter(letter) {
   addWrongLetter(letter);
-  lifes--;
+  lives--;
   draw();
   checkGame();
 }
@@ -85,20 +91,26 @@ function clearIndexes() {
 }
 
 function checkGame() {
-  if (lifes == 0) {
+  if (lives == 0) {
     document.body.removeEventListener("keypress", keyPressFunction);
-    alert("Perdiste. La palabra era: " + decrypt(canvas.dataset.word));
+    canvas.classList.add("bg-danger");
+    setTimeout(function () {
+      alert("Perdiste. La palabra era: " + decrypt(canvas.dataset.word));
+    }, 400);
     return;
   }
   let notEmpty = document.querySelectorAll(".empty");
   if (notEmpty.length === 0) {
     document.body.removeEventListener("keypress", keyPressFunction);
-    alert("Ganaste!");
+    canvas.classList.add("bg-success");
+    setTimeout(function () {
+      alert("¡Ganaste!");
+    }, 400);
   }
 }
 
 function draw() {
-  switch (lifes) {
+  switch (lives) {
     case 5:
       drawHead();
       break;
@@ -123,13 +135,16 @@ function draw() {
 function clearGame() {
   canvas.dataset.word = "";
   clear();
-  lifes = 6;
+  lives = 6;
   clearIndexes();
   lettersUser = [];
   let letterGuessed = document.querySelector("#guessed-letters");
   letterGuessed.innerHTML = "";
   let wrongLetters = document.querySelector("#wrong-letters");
   wrongLetters.innerHTML = "";
+  document.body.removeEventListener("keypress", keyPressFunction);
+  canvas.classList.remove("bg-success");
+  canvas.classList.remove("bg-danger");
 }
 
 let palabras = [
