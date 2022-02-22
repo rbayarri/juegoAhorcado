@@ -1,12 +1,15 @@
 let canvas = document.querySelector("canvas");
 let drawing = canvas.getContext("2d");
-let width = canvas.clientWidth;
-let height = canvas.clientHeight;
-canvas.width = width;
-canvas.height = height;
+let width, height;
 
+function calculateDimensions() {
+  width = canvas.clientWidth;
+  height = canvas.clientHeight;
+  canvas.width = width;
+  canvas.height = height;
+}
 
-function gameStart() {
+function drawGallow() {
   drawing.lineWidth = 4;
   drawing.moveTo(width / 3, height - height / 8);
   drawing.lineTo((width / 3) * 2, height - height / 8);
@@ -63,4 +66,8 @@ function drawRightArm() {
   drawing.moveTo((width / 3) * 1.75, height * 0.3125);
   drawing.lineTo((width / 3) * 1.875, height * 0.5);
   drawing.stroke();
+}
+
+function clear(){
+  drawing.clearRect(0,0,width,height);
 }

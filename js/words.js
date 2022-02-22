@@ -1,3 +1,137 @@
+let lifes = 6;
+let lettersUser = [];
+let indexes = [];
+
+function chooseWord() {
+  let index = randomNumber();
+  canvas.dataset.word = palabras[index];
+}
+
+function startGame() {
+  let startScreen = document.querySelector("#start-screen");
+  startScreen.classList.add("d-none");
+  let gameScreen = document.querySelector("#game-screen");
+  gameScreen.classList.remove("d-none");
+  let form = document.querySelector("#form-new-word");
+  form.classList.add("d-none");
+  calculateDimensions();
+  let code = canvas.dataset.word;
+  createLetterSpaces(decrypt(code));
+  drawGallow();
+  document.body.addEventListener("keypress", keyPressFunction);
+}
+
+function keyPressFunction() {
+  // ValidateLetter();
+  let letter = event.key.toUpperCase();
+  if (alreadyTyped(letter)) {
+    return;
+  }
+  lettersUser.push(letter);
+  if (isLetterInWord(letter)) {
+    letterGuessed(letter);
+  } else {
+    wrongLetter(letter);
+  }
+}
+
+function alreadyTyped(letter) {
+  return lettersUser.includes(letter);
+}
+
+function isLetterInWord(letter) {
+  let word = decrypt(canvas.dataset.word);
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] == letter) {
+      indexes.push(i);
+    }
+  }
+  return indexes.length;
+}
+
+function letterGuessed(letter) {
+  addGuessedLetter(letter);
+  clearIndexes();
+  checkGame();
+}
+
+function addGuessedLetter(letter) {
+  for (let i = 0; i < indexes.length; i++) {
+    let span = document.querySelector(".letter-" + indexes[i]);
+    span.textContent = letter;
+    span.classList.remove("empty");
+  }
+}
+
+function wrongLetter(letter) {
+  addWrongLetter(letter);
+  lifes--;
+  draw();
+  checkGame();
+}
+
+function addWrongLetter(letter) {
+  let wrongLetters = document.querySelector("#wrong-letters");
+  let wrongLetter = document.createElement("span");
+  wrongLetter.textContent = letter;
+  wrongLetters.appendChild(wrongLetter);
+  addSpace(wrongLetters);
+}
+
+function clearIndexes() {
+  while (indexes.length > 0) {
+    indexes.pop();
+  }
+}
+
+function checkGame() {
+  if (lifes == 0) {
+    document.body.removeEventListener("keypress", keyPressFunction);
+    alert("Perdiste. La palabra era: " + decrypt(canvas.dataset.word));
+    return;
+  }
+  let notEmpty = document.querySelectorAll(".empty");
+  if (notEmpty.length === 0) {
+    document.body.removeEventListener("keypress", keyPressFunction);
+    alert("Ganaste!");
+  }
+}
+
+function draw() {
+  switch (lifes) {
+    case 5:
+      drawHead();
+      break;
+    case 4:
+      drawBody();
+      break;
+    case 3:
+      drawLeftArm();
+      break;
+    case 2:
+      drawRightArm();
+      break;
+    case 1:
+      drawLeftLeg();
+      break;
+    case 0:
+      drawRightLeg();
+      break;
+  }
+}
+
+function clearGame() {
+  canvas.dataset.word = "";
+  clear();
+  lifes = 6;
+  clearIndexes();
+  lettersUser = [];
+  let letterGuessed = document.querySelector("#guessed-letters");
+  letterGuessed.innerHTML = "";
+  let wrongLetters = document.querySelector("#wrong-letters");
+  wrongLetters.innerHTML = "";
+}
+
 let palabras = [
   "U3Vl8W8=",
   "QmF0YWxsYQ==",
@@ -306,18 +440,9 @@ function randomNumber() {
 }
 
 function decrypt(code) {
-  return atob(code);
+  return atob(code).toUpperCase();
 }
 
 function encrypt(word) {
   return btoa(word);
-}
-
-function isThere(code,letter){
-  let word = decrypt(code);
-  if(word.includes(letter)){
-    guessedLetter(letter);
-  }else{
-    lifeLost(letter);
-  }
 }

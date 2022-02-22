@@ -26,6 +26,14 @@ button {
   border-bottom: 5px solid black;
 }
 
+.empty{
+  color:transparent;
+}
+
+#wrong-letters{
+  color: red;
+}
+
 #board{
   border: 1px black solid;
 }
