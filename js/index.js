@@ -14,14 +14,20 @@ btnStartGame.addEventListener("click", function () {
 });
 
 let newWordForm = document.querySelector("#form-new-word-2");
-newWordForm.addEventListener("submit", function(){
-  let word = newWordForm.word.value;
-  //validateInput();
+newWordForm.addEventListener("submit", function(event){
   event.preventDefault();
-  canvas.dataset.word = encrypt(word);
-  startGame();
-  newWordForm.word.value = "";
+
+  let word = newWordForm.word.value;
+  if(validateInput(word)){
+    canvas.dataset.word = encrypt(word);
+    startGame();
+    newWordForm.word.value = "";
+  }else{
+    newWordForm.word.classList.add("invalid-input");
+  }
 });
+
+newWordForm.word.addEventListener("keypress",function(){this.classList.remove("invalid-input")})
 
 let btnSurrender = document.querySelector("#btn-surrender");
 btnSurrender.addEventListener("click",function(){
@@ -79,4 +85,9 @@ function addSpace(parent, width) {
     space.style.width = "15px";
   }
   parent.appendChild(space);
+}
+
+function validateInput(word){
+  let pattern = /[^A-z]/
+  return !pattern.test(word) && word.length <= 8 && word.length > 0;
 }

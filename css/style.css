@@ -20,6 +20,10 @@ button {
   min-height: 60vh;
 }
 
+.invalid-input{
+  border: 1px solid red;
+}
+
 .letter-space {
   display: inline-block;
   max-width: 45px;
